@@ -1,0 +1,48 @@
+/* STYLE CSS CODE FOR USER INTERFACE ON RASPBERRY PI*/
+html,body {
+  font: 400 0.875rem/1.5 "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
+}
+.title {            /*setting the style for the Project Title*/
+  margin: 0;
+  vertical-align: top;
+  text-align: center;
+  font-weight: bold;
+  font-size: 50px;
+  color: #2e3238;
+  text-transform: none;
+  display: inline-block;
+}
+.developed-by {     /*setting the style for the Project Team Members names*/
+  margin: 0;
+  vertical-align: top;
+  text-align: center;
+  font-size: 50px;
+  color: #2e3238;
+  text-transform: none;
+  display: inline-block;
+}
+.date-time {      /*setting the style for the date-time shown*/
+  margin: 0;
+  vertical-align: top;
+  text-align: center;
+  font-size: 20px;
+  color: #2e3238;
+  text-transform: none;
+  display: inline-block;
+}
+.my-grid-container {    /*setting the style for the grid container that holds the data and video*/
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: #FFFFFF;
+  padding: 10px;
+}
+.my-grid-item {         /*setting the style for the grid container data */
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 25px;
+  text-align: center;
+}

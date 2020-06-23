@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">//
+<head>
+ <title>Surveillance Robot</title>          <!---Browser Tab Title-->
+ <!---importing strobe media libraries-->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script type="text/javascript" src="assets/js/date_time.js"></script>
+ <script type="text/javascript" src="assets/js/reload.js"></script>
+ <script type="text/javascript" src="strobe/lib/swfobject.js"></script>
+ <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+ <script type="text/javascript">        
+        //flash media layer
+       // Create a StrobeMediaPlayback configuration 
+       var parameters = {  
+           src: "rtmp://" + window.location.hostname + "/flvplayback/myStream",  
+           autoPlay: true,  
+           controlBarAutoHide: false,  
+           playButtonOverlay: true,  
+           showVideoInfoOverlayOnStartUp: false,  
+           optimizeBuffering : false,  
+           initialBufferTime : 0.1,  
+           expandedBufferTime : 0.1,  
+           minContinuousPlayback : 0.1,  
+           poster: "strobe/images/poster.png"  
+       };  
+
+      // Embed the player SWF:          
+      swfobject.embedSWF
+      ( "strobe/StrobeMediaPlayback.swf"
+       , "strobeMediaPlayback"
+       , 600        //resolution of video player
+       , 400
+       , "10.1.0"
+       , {}
+       , parameters
+       , { allowFullScreen: "true"}
+       , { name: "strobeMediaPlayback" }
+       );
+      
+   </script>  
+   
+</head>
+
+<body>
+   <!---PHP Serial Communication Setup-->
+  <?php
+  include '/var/www/html/php_serial.class.php';	
+  $serial = new phpSerial();
+  $serial->deviceSet("/dev/ttyACM0");       <!---Arduino Serial Name-->
+  $serial->confBaudRate(9600);              <!---baud rate-->
+  $serial->deviceOpen();   
+  ?>
+
+
+<!------------------------------------------>
+
+<div  align="Center">   <!---Title of Project-->
+  <div class="title"><span style="color:#2e3238;font-size40:px; "><u>Adjustable Surveillance Camera Robot</u></span></div>
+</div>
+<div  align="center">   <!---Team members of Project-->
+	<div class="developed-by"><span style="color:#2e3238;font-size:30px; ">Final Year Project by Muhammad Hamza & Abdul Hadi Zahid<br></span></div>
+</div>
+
+<!---div for display time Start-->
+<div align="right">
+ <div class="date-time">&nbsp;<span id="date_time"></span></div>
+            <script type="text/javascript">window.onload = date_time('date_time');</script>
+</div>
+<!---div for display time End-->
+
+<!---div for display environment data starts-->
+<div class="my-grid-container fix">
+  <!--div-1 open-->
+  <div class="my-grid-item">
+   <p><u><b>Environment Data</b></u></p>
+        <label for="fname">Temperature (*C):</label><br>            <!---temp-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        <label for="fname">Relative Humidity (%):</label><br>       <!---humidity-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        <label for="fname">CO Concentration (ppm):</label><br>      <!---CO-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        <label for="fname">CO2 Concentration (ppm):</label><br>     <!---CO2-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        <label for="fname">CH4 Concentration (ppm):</label><br>      <!---CH4-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        </div>
+    <!--div-1 Close-->
+    
+    <!--div-2 open [VIDEO]-->
+  <div class="my-grid-item">
+        <p><u><b>Live-Video Stream</b></u></p>
+        <div id="strobeMediaPlayback">
+  </div>
+  </div>
+    <!--div-2 Close-->
+    
+    <!--div-3 open [Distance from Obj]-->
+  <div class="my-grid-item">
+  <p><u><b>Distance From Object</b></u></p>
+        <label for="fname">Front (cm):</label><br>                      <!---Front dist-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        <label for="fname">Back (cm):</label><br>                       <!---Back dist-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        <label for="fname">Left (cm):  </label><br>                     <!---Left dist-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        <label for="fname">Right (cm):</label><br>                       <!---Right dist-->
+        <input type="text" id="fname" name="fname"  value="0.0"><br>
+        </div>   
+    <!--div-3 Close-->
+</div>
+
+<!--Placing Buttons on Interface-->
+<table class="table table-bordered table-dark" align="center">
+ <tbody>
+    <tr>
+      <th scope="col">
+          <div id="buttons">
+          <center>
+            <form method="get" action="index.html">         <!--Negative Tilt Button-->
+                 <button type="submit" name="Negative" value="Negative" style="margin:10px"><img src="assets/images/negative.png" width="40" height="40"></button>
+            </form>
+			
+            </center>
+      </div>
+      </th>
+
+      <th scope="col">
+          <div id="buttons">
+          <center>
+            <form method="get" action="index.html">             <!--Anticlockwise movement Button-->
+                <button type="submit" name="Anticlockwise" value="Anticlockwise" style="margin:10px" ><img src="assets/images/anticlock.png" width="40" height="40"></button>
+            </form>
+            </center>
+      </div>
+      </th>
+
+      <th scope="col">
+          <div id="buttons">
+          <center>
+            <form method="get" action="index.html">             <!--Down movement Button-->
+                <button type="submit" name="Down" value="Down" style="margin:10px" ><img src="assets/images/downTail.png" width="40" height="40"></button>
+            </form>
+            </center>
+      </div>
+      </th>
+
+      <th scope="col">
+        <div id="buttons">
+          <center>
+            <form method="get" action="index.html" >                <!--Chassis Buttons-->
+                <button type="submit" name="Forward" value="Forward" style="margin:10px" ><img src="assets/images/forward.png" width="40" height="40"></button>
+                <br> 
+                <button type="submit" name="Left" value="Left" style="margin:10px" ><img src="assets/images/left.png" width="40" height="40"></button> 
+                <button type="submit" name="StopC" value="Stop" style="margin:10px" ><img src="assets/images/stop.png" width="40" height="40"></button>
+                <button type="submit" name="Right" value="Right" style="margin:10px" ><img src="assets/images/right.png" width="40" height="40"></button>
+                <br>
+                <button type="submit" name="Reverse" value="Reverse" style="margin:10px" ><img src="assets/images/backword.png" width="40" height="40"></button>
+           <br>
+        </center>
+            </form>
+      </div>
+      </th>
+
+      <th scope="col">
+          <div id="buttons">
+          <center>
+            <form method="get" action="index.html">         <!--up movement Button-->
+                 <button type="submit" name="Up" value="Up" style="margin:10px" ><img src="assets/images/upTail.png" width="40" height="40"></button>
+            </form>
+            </center>
+      </div>
+      </th>
+
+      <th scope="col"><div id="buttons">
+          <center>
+            <form method="get" action="index.html">         <!--clockwise movement Button-->
+                <button type="submit" name="Clockwise" value="Clockwise" style="margin:10px" ><img src="assets/images/clock.png" width="40" height="40"></button>
+            </form>
+            </center>
+      </div>
+      </th>
+
+      <th scope="col">
+          <div id="buttons">
+          <center>
+            <form method="get" action="index.html">         <!--Neg Tilt movement Button-->
+                <button type="submit" name="Positive" value="Positive" style="margin:10px" ><img src="assets/images/positive.png" width="40" height="40"></button>
+            </form>
+            </center>
+      </div>
+      </th>
+    </tr>
+  </tbody>
+ </table>
+
+<?php    		                          <!--PHP Data Transmission-->
+    if(isset($_GET['Forward'])){            <!--Forward: 1-->
+        $serial->sendMessage("1");
+    }
+    else if(isset($_GET['Reverse'])){       <!--Reverse: 2-->
+        $serial->sendMessage("2");
+    }
+    else if(isset($_GET['Left'])){          <!--Left: 3-->
+        $serial->sendMessage("3");                   
+    }
+    else if(isset($_GET['Right'])){         <!--Right: 4-->
+        $serial->sendMessage("4");
+    }
+    else if(isset($_GET['Stop'])){          <!--Stop: 5-->
+        $serial->sendMessage("5");
+    }
+    else if(isset($_GET['Up'])){            <!--Up: 6-->
+        $serial->sendMessage("6");
+    }
+    else if(isset($_GET['Down'])){          <!--Down: 7-->
+        $serial->sendMessage("7");
+    }
+    else if(isset($_GET['Clockwise'])){     <!--Clockwise: 8-->
+        $serial->sendMessage("8");
+    }
+    else if(isset($_GET['Anticlockwise'])){     <!--Anti clockwise: 9-->
+        $serial->sendMessage("9");
+    }
+    else if(isset($_GET['Positive'])){          <!--+ve tilt: 10-->
+        $serial->sendMessage("10");
+    }
+    else if(isset($_GET['Negative'])){          <!---ve tilt: 11-->
+        $serial->sendMessage("11");
+    }
+?>
+</body>
+</html>
+
